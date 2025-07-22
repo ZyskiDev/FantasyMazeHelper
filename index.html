@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fantasy Map Helper</title>
+  <style>
+    body { font-family: sans-serif; background: #222; color: white; text-align: center; }
+    canvas { border: 1px solid white; margin-top: 10px; }
+    input[type="text"] { width: 80%; padding: 5px; font-size: 16px; }
+    button { padding: 5px 10px; margin-left: 5px; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+  <h1></h1>
+
+  <input type="text" id="coordInput" placeholder="Paste F3+C execute command here">
+  <button onclick="drawDotFromInput()">Place Dot</button>
+
+  <br>
+  <canvas id="mapCanvas" width="512" height="512"></canvas>
+
+  <script>
+    const canvas = document.getElementById("mapCanvas");
+    const ctx = canvas.getContext("2d");
+    const image = new Image();
+
+    image.src = "maze_map_full.png";
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0);
+    };
+
+    const worldMinX = 0;
+    const worldMaxX = 512;
+    const worldMinZ = 0;
+    const worldMaxZ = 512;
+
+    function drawDotFromInput() {
+      const input = document.getElementById("coordInput").value.trim();
+      const regex = /tp\s+@s\s+(-?\d+(?:\.\d+)?)\s+\d+(?:\.\d+)?\s+(-?\d+(?:\.\d+)?)/;
+      const match = input.match(regex);
+      if (!match) {
+        alert("Invalid input. Make sure it's the full /execute line from F3+C.");
+        return;
+      }
+
+      const x = parseFloat(match[1]);
+      const z = parseFloat(match[2]);
+      const px = ((x - worldMinX) / (worldMaxX - worldMinX)) * canvas.width;
+      const pz = ((z - worldMinZ) / (worldMaxZ - worldMinZ)) * canvas.height;
+	  
+      ctx.drawImage(image, 0, 0);
+      ctx.fillStyle = "#66FFFF";
+      ctx.beginPath();
+      ctx.arc(px, pz, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  </script>
+</body>
+</html>
