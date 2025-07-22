@@ -35,26 +35,27 @@
     const worldMinZ = 0;
     const worldMaxZ = 512;
 
-    function drawDotFromInput() {
-      const input = document.getElementById("coordInput").value.trim();
-      const regex = /tp\s+@s\s+(-?\d+(?:\.\d+)?)\s+\d+(?:\.\d+)?\s+(-?\d+(?:\.\d+)?)/;
-      const match = input.match(regex);
-      if (!match) {
-        alert("Invalid input. Make sure it's the full /execute line from F3+C.");
-        return;
-      }
+   function drawDotFromInput() {
+  const input = document.getElementById("coordInput").value.trim();
+  const regex = /tp\s+@s\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/;
+  const match = input.match(regex);
+  if (!match) {
+    alert("Invalid input. Make sure it's the full /execute line from F3+C.");
+    return;
+  }
 
-      const x = parseFloat(match[1]);
-      const z = parseFloat(match[2]);
-      const px = ((x - worldMinX) / (worldMaxX - worldMinX)) * canvas.width;
-      const pz = ((z - worldMinZ) / (worldMaxZ - worldMinZ)) * canvas.height;
-	  
-      ctx.drawImage(image, 0, 0);
-      ctx.fillStyle = "#66FFFF";
-      ctx.beginPath();
-      ctx.arc(px, pz, 5, 0, Math.PI * 2);
-      ctx.fill();
-    }
+  const x = parseFloat(match[1]);  
+  const z = parseFloat(match[3]);
+
+  const px = ((x - worldMinX) / (worldMaxX - worldMinX)) * canvas.width;
+  const pz = ((z - worldMinZ) / (worldMaxZ - worldMinZ)) * canvas.height;
+
+  ctx.drawImage(image, 0, 0);
+  ctx.fillStyle = "#66FFFF";
+  ctx.beginPath();
+  ctx.arc(px, pz, 5, 0, Math.PI * 2);
+  ctx.fill();
+}
   </script>
 </body>
 </html>
